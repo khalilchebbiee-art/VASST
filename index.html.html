@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VASST - VisionAssist Smart Glasses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover { color: #667eea; }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            background: radial-gradient(ellipse at top, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #ccc;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .hero-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+        
+        .feature-icon {
+            font-size: 20px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #333;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Glasses Animation */
+        .glasses-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+        
+        .glasses-frame {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .glasses-lens {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #667eea;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 3s infinite;
+        }
+        
+        .lens-indicator {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+        
+        .glasses-bridge {
+            width: 20px;
+            height: 5px;
+            background: #667eea;
+            border-radius: 3px;
+            margin: 0 5px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(10, 10, 20, 1) 100%);
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #888;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+        }
+        
+        .feature-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-icon-large { font-size: 35px; }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: linear-gradient(180deg, rgba(10, 10, 20, 1) 0%, rgba(0, 0, 0, 1) 100%);
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            transform: scale(1.05);
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .pricing-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .plan-price {
+            margin-bottom: 20px;
+        }
+        
+        .current-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .plan-description {
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features li {
+            padding: 8px 0;
+            color: #ddd;
+        }
+        
+        .pricing-features li:before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 60px 0 40px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(5, 5, 15, 1) 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .footer-content {
+            margin-bottom: 40px;
+        }
+        
+        .footer p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ccc;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .hero-title { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            
+            .features-grid { grid-template-columns: 1fr; }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .glasses-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <span>👓</span>
+                    <span class="logo-text">VASST</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <a href="#contact" class="btn-primary">Order Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        See the World<br>
+                        <span class="gradient-text">Through Sound</span>
+                    </h1>
+                    
+                    <p class="hero-subtitle">
+                        Revolutionary smart glasses designed specifically for blind and visually impaired people. 
+                        Navigate with confidence using AI-powered obstacle detection, voice guidance, and 
+                        100% offline technology.
+                    </p>
+                    
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🎯</span>
+                            <span>15m Vehicle Detection</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🗺️</span>
+                            <span>Offline GPS Navigation</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🔋</span>
+                            <span>12+ Hour Battery</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <a href="#pricing" class="btn-primary">Pre-Order Now - 850 DT</a>
+                        <a href="#features" class="btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="glasses-container">
+                        <div class="glasses-frame">
+                            <div class="glasses-lens">
+                                <div class="lens-indicator"></div>
+                            </div>
+                            <div class="glasses-bridge"></div>
+                            <div class="glasses-lens">
+                                <div class="lens-indicator"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Revolutionary Features</h2>
+            <p class="section-subtitle">
+                Cutting-edge technology designed to enhance independence and mobility for blind and visually impaired users.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🎯</span>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Detection</h3>
+                    <p class="feature-description">
+                        Advanced obstacle detection up to 5m and vehicle detection up to 15m using embedded AI models.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🗺️</span>
+                    </div>
+                    <h3 class="feature-title">Offline GPS Navigation</h3>
+                    <p class="feature-description">
+                        Navigate confidently without internet connection using pre-loaded maps and voice guidance.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🔊</span>
+                    </div>
+                    <h3 class="feature-title">Bone Conduction Audio</h3>
+                    <p class="feature-description">
+                        Hear important information while staying aware of your surroundings through bone conduction technology.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🎤</span>
+                    </div>
+                    <h3 class="feature-title">Voice Commands</h3>
+                    <p class="feature-description">
+                        Control your glasses with simple voice commands processed entirely offline.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🔋</span>
+                    </div>
+                    <h3 class="feature-title">Extended Battery Life</h3>
+                    <p class="feature-description">
+                        Up to 12+ hours of continuous use with intelligent power management.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <span class="feature-icon-large">🛡️</span>
+                    </div>
+                    <h3 class="feature-title">100% Offline Operation</h3>
+                    <p class="feature-description">
+                        Complete privacy and functionality without any internet connection required.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">
+                Revolutionary technology at an accessible price. No subscriptions, no hidden fees.
+            </p>
+
+            <div class="pricing-card">
+                <div class="pricing-badge">Early Bird Special</div>
+                
+                <h3 class="plan-name">VisionAssist Glasses</h3>
+                <div class="plan-price">
+                    <span class="current-price">850 DT</span>
+                </div>
+                <p class="plan-description">Complete smart glasses package</p>
+
+                <div class="pricing-features">
+                    <ul>
+                        <li>Complete VisionAssist glasses</li>
+                        <li>AI-powered obstacle detection</li>
+                        <li>Offline GPS navigation</li>
+                        <li>Bone conduction audio</li>
+                        <li>Voice command system</li>
+                        <li>12+ hour battery life</li>
+                        <li>USB-C charging</li>
+                        <li>One year warranty</li>
+                        <li>Free software updates</li>
+                        <li>Customer support</li>
+                    </ul>
+                </div>
+
+                <a href="#contact" class="btn-primary" style="width: 100%; display: block; text-align: center; padding: 16px;">
+                    Pre-Order Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo" style="justify-content: center; margin-bottom: 30px;">
+                    <span>👓</span>
+                    <span class="logo-text">VASST</span>
+                </div>
+                
+                <p>Vision Assist Technologies - Pioneering accessible AI solutions for the visually impaired community.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>📧</span>
+                        <span>contact@vasst.tn</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📱</span>
+                        <span>+216 23 568 059</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📍</span>
+                        <span>Tunis, Tunisia</span>
+                    </div>
+                </div>
+                
+                <p style="color: #666; font-size: 14px;">
+                    Founded by Khalil Chebbi  | Academic Year 2025/2026<br>
+                    Made with ❤️ in Tunisia for global accessibility
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.98)';
+                navbar.style.padding = '15px 0';
+            } else {
+                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+                navbar.style.padding = '20px 0';
+            }
+        });
+    </script>
+</body>
+</html>
